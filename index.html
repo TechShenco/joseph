@@ -1,0 +1,1220 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Morgan | Creative Developer & Designer Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        },
+                        darkBg: '#0b0f19',
+                        darkCard: '#151b2d',
+                        lightBg: '#f8fafc',
+                        lightCard: '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.05);
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 4px;
+        }
+        /* Glassmorphic elements */
+        .glass {
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .dark .glass {
+            backdrop-filter: blur(12px);
+            background-color: rgba(21, 27, 45, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Floating animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-lightBg text-slate-800 dark:bg-darkBg dark:text-slate-200 min-h-screen relative overflow-x-hidden">
+
+    <!-- Interactive Background Canvas -->
+    <canvas id="particleCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40 dark:opacity-30"></canvas>
+
+    <!-- Custom Toast Alert Area -->
+    <div id="toastContainer" class="fixed top-24 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-40 glass shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-18 py-4 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30 transition-transform duration-300 group-hover:scale-110">
+                    A
+                </div>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-500 to-primary-600 bg-clip-text text-transparent">Alex.Dev</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#about" class="hover:text-primary-500 transition-colors">About</a>
+                <a href="#skills" class="hover:text-primary-500 transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-primary-500 transition-colors">Projects</a>
+                <a href="#experience" class="hover:text-primary-500 transition-colors">Experience</a>
+                <a href="#testimonials" class="hover:text-primary-500 transition-colors">Reviews</a>
+                <a href="#contact" class="hover:text-primary-500 transition-colors">Contact</a>
+            </div>
+
+            <!-- Header Controls & CTAs -->
+            <div class="flex items-center gap-4">
+                <!-- Theme toggle button -->
+                <button id="themeToggle" class="w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center transition-colors shadow-sm" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon text-slate-600 dark:hidden text-lg"></i>
+                    <i class="fa-solid fa-sun text-yellow-400 hidden dark:block text-lg"></i>
+                </button>
+
+                <!-- Hire Me desktop button -->
+                <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:scale-[1.02] active:scale-95 transition-all text-sm">
+                    Hire Me
+                </a>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle menu">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobileMenu" class="hidden md:hidden glass border-t border-slate-200/50 dark:border-slate-800/50 animate-fade-in">
+            <div class="px-6 py-4 flex flex-col gap-4 font-semibold text-lg">
+                <a href="#about" class="mobile-nav-link hover:text-primary-500 py-1 border-b border-slate-200/10 transition-colors">About</a>
+                <a href="#skills" class="mobile-nav-link hover:text-primary-500 py-1 border-b border-slate-200/10 transition-colors">Skills</a>
+                <a href="#projects" class="mobile-nav-link hover:text-primary-500 py-1 border-b border-slate-200/10 transition-colors">Projects</a>
+                <a href="#experience" class="mobile-nav-link hover:text-primary-500 py-1 border-b border-slate-200/10 transition-colors">Experience</a>
+                <a href="#testimonials" class="mobile-nav-link hover:text-primary-500 py-1 border-b border-slate-200/10 transition-colors">Reviews</a>
+                <a href="#contact" class="mobile-nav-link hover:text-primary-500 py-1 transition-colors">Contact</a>
+                <a href="#contact" class="mobile-nav-link inline-flex items-center justify-center px-5 py-3 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-bold text-center mt-2 shadow-lg shadow-indigo-500/20">
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-28 pb-12 px-6 overflow-hidden z-10">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Column: Intro -->
+            <div class="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+                <!-- Highlight badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-primary-500/20 text-primary-500 dark:text-primary-100 font-semibold text-xs tracking-wider uppercase shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Available for Freelance & Remote Work
+                </div>
+                
+                <!-- Main Header with Glowing effect -->
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-none text-slate-900 dark:text-white">
+                    Hi, I'm <span class="bg-gradient-to-r from-primary-500 via-indigo-500 to-pink-500 bg-clip-text text-transparent">Alex Morgan</span><br>
+                    <span class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-600 dark:text-slate-400 mt-2 block" id="typingText"></span>
+                </h1>
+                
+                <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+                    I design and build interactive web applications that combine pixel-perfect frontend aesthetics with high-performance, robust architectures. Let's build something exceptional!
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a href="#projects" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-semibold shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/40 hover:scale-[1.03] active:scale-95 transition-all">
+                        View Projects <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#contact" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl glass hover:bg-slate-200/50 dark:hover:bg-slate-800/50 font-semibold shadow-md transition-all">
+                        Let's Talk <i class="fa-solid fa-envelope"></i>
+                    </a>
+                </div>
+
+                <!-- Social Profiles Grid -->
+                <div class="flex items-center gap-4 pt-4">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Find me on</span>
+                    <span class="h-px w-8 bg-slate-300 dark:bg-slate-700"></span>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-xl glass hover:bg-primary-500 hover:text-white flex items-center justify-center transition-all hover:scale-110" aria-label="GitHub"><i class="fa-brands fa-github text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass hover:bg-primary-500 hover:text-white flex items-center justify-center transition-all hover:scale-110" aria-label="LinkedIn"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass hover:bg-primary-500 hover:text-white flex items-center justify-center transition-all hover:scale-110" aria-label="Twitter"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl glass hover:bg-primary-500 hover:text-white flex items-center justify-center transition-all hover:scale-110" aria-label="Dribbble"><i class="fa-brands fa-dribbble text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Premium Visual Artifact -->
+            <div class="lg:col-span-5 flex justify-center items-center relative py-8">
+                <!-- Behind glowing backgrounds -->
+                <div class="absolute w-72 h-72 rounded-full bg-primary-500/20 blur-3xl -top-10 -left-10 animate-pulse"></div>
+                <div class="absolute w-72 h-72 rounded-full bg-pink-500/20 blur-3xl -bottom-10 -right-10 animate-pulse"></div>
+
+                <!-- Animated Interactive Device Mockup -->
+                <div class="relative glass rounded-3xl p-6 shadow-2xl border border-slate-200/40 dark:border-slate-800/40 w-full max-w-sm sm:max-w-md animate-float">
+                    <!-- Glass Top bar simulating a browser -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-200/30 dark:border-slate-800/30 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                        </div>
+                        <span class="text-xs text-slate-400 font-mono">alex-creative.json</span>
+                        <i class="fa-solid fa-ellipsis-vertical text-slate-400"></i>
+                    </div>
+
+                    <!-- Code block simulation with dynamic syntax highlighting -->
+                    <div class="font-mono text-sm leading-relaxed overflow-x-auto text-left whitespace-pre">
+                        <p class="text-slate-400"><span class="text-indigo-400 font-bold">const</span> developer = {</p>
+                        <p class="pl-4 text-slate-400">name: <span class="text-emerald-400">"Alex Morgan"</span>,</p>
+                        <p class="pl-4 text-slate-400">role: <span class="text-emerald-400">"Full Stack Architect"</span>,</p>
+                        <p class="pl-4 text-slate-400">skills: [</p>
+                        <p class="pl-8 text-indigo-300">"React", "NodeJS", "Tailwind",</p>
+                        <p class="pl-8 text-indigo-300">"TypeScript", "GraphQL", "Python"</p>
+                        <p class="pl-4 text-slate-400">],</p>
+                        <p class="pl-4 text-slate-400">lovesCoffee: <span class="text-amber-500 font-bold">true</span>,</p>
+                        <p class="pl-4 text-slate-400">problemSolver: <span class="text-amber-500 font-bold">true</span>,</p>
+                        <p class="pl-4 text-slate-400">motto: <span class="text-rose-400">"Clean code, seamless UX"</span></p>
+                        <p class="text-slate-400">};</p>
+                    </div>
+
+                    <!-- Small hovering floating stats badge -->
+                    <div class="absolute -right-6 top-1/3 glass p-4 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-200/50 hover:scale-105 transition-transform duration-300">
+                        <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-500 flex items-center justify-center">
+                            <i class="fa-solid fa-fire text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400">Completed</p>
+                            <p class="text-sm font-extrabold">95+ Projects</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Stats Counter Bar -->
+    <section class="py-12 px-6 relative z-10 glass border-y border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+                <h3 class="text-4xl sm:text-5xl font-extrabold text-primary-500 mb-2">5+</h3>
+                <p class="text-slate-500 dark:text-slate-400 font-semibold text-sm uppercase tracking-wide">Years of Experience</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl sm:text-5xl font-extrabold text-primary-500 mb-2">120+</h3>
+                <p class="text-slate-500 dark:text-slate-400 font-semibold text-sm uppercase tracking-wide">Happy Worldwide Clients</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl sm:text-5xl font-extrabold text-primary-500 mb-2">99.9%</h3>
+                <p class="text-slate-500 dark:text-slate-400 font-semibold text-sm uppercase tracking-wide">Customer Satisfaction</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl sm:text-5xl font-extrabold text-primary-500 mb-2">25+</h3>
+                <p class="text-slate-500 dark:text-slate-400 font-semibold text-sm uppercase tracking-wide">Open Source Projects</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="py-24 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Visual Image/Shape Collage -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-72 h-72 sm:w-96 sm:h-96">
+                        <!-- Background frame decoration -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-3xl rotate-6 opacity-30 animate-pulse"></div>
+                        <!-- Frame mockup -->
+                        <div class="absolute inset-0 bg-slate-200 dark:bg-slate-800 rounded-3xl border border-slate-300 dark:border-slate-700 overflow-hidden shadow-2xl flex flex-col justify-between p-6">
+                            <!-- Visual avatar block -->
+                            <div class="flex items-center gap-4">
+                                <img src="https://placehold.co/120x120/6366f1/ffffff?text=Alex" alt="Alex Morgan" class="w-16 h-16 rounded-2xl object-cover shadow-md border-2 border-white dark:border-slate-900" onerror="this.src='https://placehold.co/150'">
+                                <div>
+                                    <h4 class="font-extrabold text-lg text-slate-800 dark:text-white">Alex Morgan</h4>
+                                    <p class="text-xs text-primary-500 font-semibold">Senior Creative Engineer</p>
+                                </div>
+                            </div>
+
+                            <!-- Mock design workflow visualizer -->
+                            <div class="my-auto space-y-3">
+                                <div class="p-3 bg-white dark:bg-slate-900/50 rounded-xl flex items-center gap-3 shadow-sm">
+                                    <i class="fa-solid fa-bezier-curve text-pink-500"></i>
+                                    <div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                        <div class="h-full w-[85%] bg-gradient-to-r from-pink-500 to-primary-500 rounded-full"></div>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-500">UI/UX</span>
+                                </div>
+                                <div class="p-3 bg-white dark:bg-slate-900/50 rounded-xl flex items-center gap-3 shadow-sm">
+                                    <i class="fa-solid fa-code text-indigo-500"></i>
+                                    <div class="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                        <div class="h-full w-[95%] bg-gradient-to-r from-indigo-500 to-primary-500 rounded-full"></div>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-500">Code</span>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-center text-slate-400 italic">"Turning ideas into highly engaging user experiences."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Description Content -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="h-1 w-12 bg-primary-500 rounded-full"></span>
+                        <h2 class="text-primary-500 dark:text-primary-400 font-bold uppercase tracking-wider text-sm">About Me</h2>
+                    </div>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+                        Crafting software that bridges human intuition with technical precision.
+                    </h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
+                        I am a full-stack product engineer specializing in modern React interfaces, secure NodeJS architectures, and cloud deployments. Since 2021, I have partnered with dozens of companies to ship scalable applications, dynamic visual portfolios, and robust automated tools.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Whether designing fully custom responsive web components or configuring high-availability microservices, I bring a detail-oriented mindset that guarantees stellar user satisfaction and clean, maintainable systems.
+                    </p>
+
+                    <!-- Interactive Resume Interactive View and Download -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button onclick="viewResume()" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-semibold shadow-md transition-all active:scale-95 text-sm">
+                            <i class="fa-solid fa-file-invoice"></i> View Live Resume
+                        </button>
+                        <a href="#" download class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all active:scale-95 text-sm">
+                            <i class="fa-solid fa-download"></i> Download PDF
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Skills Section -->
+    <section id="skills" class="py-24 px-6 relative z-10 glass border-y border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center gap-3 justify-center mx-auto">
+                    <span class="h-1 w-8 bg-primary-500 rounded-full"></span>
+                    <h2 class="text-primary-500 dark:text-primary-400 font-bold uppercase tracking-wider text-sm">My Expertise</h2>
+                    <span class="h-1 w-8 bg-primary-500 rounded-full"></span>
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Tech Stack & Skillset</h3>
+                <p class="text-slate-600 dark:text-slate-400">Hover or tap on skills below to trigger animations and explore details of tools I use on a daily basis.</p>
+            </div>
+
+            <!-- Custom Interactive Skill Grid Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Frontend Panel -->
+                <div class="glass p-6 rounded-2xl border border-slate-200/50 hover:border-primary-500/50 transition-all duration-300 hover:shadow-xl group">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-laptop-code text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-bold">Frontend Engineering</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>React & Next.js</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>TypeScript</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>Tailwind CSS</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend Panel -->
+                <div class="glass p-6 rounded-2xl border border-slate-200/50 hover:border-primary-500/50 transition-all duration-300 hover:shadow-xl group">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-server text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-bold">Backend & Databases</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>NodeJS / Express</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-pink-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>PostgreSQL & MongoDB</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-pink-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>GraphQL / REST APIs</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-pink-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud & Tooling Panel -->
+                <div class="glass p-6 rounded-2xl border border-slate-200/50 hover:border-primary-500/50 transition-all duration-300 hover:shadow-xl group">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-cloud text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-bold">Cloud & Tooling</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>AWS / GCP Cloud</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="80%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>Docker & CI/CD</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 font-semibold">
+                                <span>Git / Linux systems</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full w-0 transition-all duration-1000 scroll-trigger-width" data-width="95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Filterable Portfolio Projects Section -->
+    <section id="projects" class="py-24 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <span class="h-1 w-12 bg-primary-500 rounded-full"></span>
+                        <h2 class="text-primary-500 dark:text-primary-400 font-bold uppercase tracking-wider text-sm">Portfolio</h2>
+                    </div>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">Selected Creative Works</h3>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-sm font-semibold active-filter bg-primary-500 text-white transition-all shadow-md" data-filter="all">All</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-sm" data-filter="web">Web App</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-sm" data-filter="design">UI/UX Design</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all shadow-sm" data-filter="ai">AI / IoT</button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div id="projectsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 -->
+                <div class="project-card glass rounded-2xl overflow-hidden shadow-lg border border-slate-200/50 hover:-translate-y-2 transition-transform duration-300 flex flex-col justify-between group" data-category="web">
+                    <div class="relative overflow-hidden aspect-video">
+                        <img src="https://placehold.co/600x400/6366f1/ffffff?text=E-Commerce+SaaS" alt="E-Commerce Platform" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400'">
+                        <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-4 transition-opacity duration-300">
+                            <button onclick="openProjectModal('SaaS E-Commerce Ecosystem', 'Full scale checkout ecosystem designed with robust high scale dynamic pipelines.', 'React, Next.js, Stripe API, Node.js, MongoDB', 'https://placehold.co/600x400/6366f1/ffffff?text=E-Commerce+SaaS')" class="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform shadow-md" aria-label="Quick View"><i class="fa-solid fa-eye text-lg"></i></button>
+                            <a href="#" class="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform shadow-md" aria-label="Source code"><i class="fa-solid fa-link text-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center gap-2 text-xs font-bold text-indigo-500 uppercase">
+                            <i class="fa-solid fa-cart-shopping"></i> Web Application
+                        </div>
+                        <h4 class="text-xl font-bold">Zenith E-Commerce Dashboard</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm">Next Generation automated transactional dashboard with fast checkout analytics.</p>
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Next.js</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Tailwind</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Node</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass rounded-2xl overflow-hidden shadow-lg border border-slate-200/50 hover:-translate-y-2 transition-transform duration-300 flex flex-col justify-between group" data-category="design">
+                    <div class="relative overflow-hidden aspect-video">
+                        <img src="https://placehold.co/600x400/ec4899/ffffff?text=Fintech+Mobile+UI" alt="Fintech Mobile App" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400'">
+                        <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-4 transition-opacity duration-300">
+                            <button onclick="openProjectModal('Aura Financial Platform', 'Beautiful minimalist banking app interface focusing on spatial designs.', 'Figma, Tailwind, React Native', 'https://placehold.co/600x400/ec4899/ffffff?text=Fintech+Mobile+UI')" class="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform shadow-md" aria-label="Quick View"><i class="fa-solid fa-eye text-lg"></i></button>
+                            <a href="#" class="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform shadow-md" aria-label="Source code"><i class="fa-solid fa-link text-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center gap-2 text-xs font-bold text-pink-500 uppercase">
+                            <i class="fa-solid fa-mobile-screen-button"></i> UI/UX Design
+                        </div>
+                        <h4 class="text-xl font-bold">Aura Fintech App Interface</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm">Clean banking wireframes and interfaces mapping dark and light responsive controls.</p>
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Figma</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Tailwind</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Prototyping</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass rounded-2xl overflow-hidden shadow-lg border border-slate-200/50 hover:-translate-y-2 transition-transform duration-300 flex flex-col justify-between group" data-category="ai">
+                    <div class="relative overflow-hidden aspect-video">
+                        <img src="https://placehold.co/600x400/10b981/ffffff?text=AI+Voice+Assistant" alt="AI Assistant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400'">
+                        <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-4 transition-opacity duration-300">
+                            <button onclick="openProjectModal('Atlas Voice Orchestrator', 'Neural natural language parsing tool utilizing local lightweight visual intelligence models.', 'Python, PyTorch, OpenAI API, FastAPI', 'https://placehold.co/600x400/10b981/ffffff?text=AI+Voice+Assistant')" class="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform shadow-md" aria-label="Quick View"><i class="fa-solid fa-eye text-lg"></i></button>
+                            <a href="#" class="w-12 h-12 rounded-full bg-white text-slate-900 flex items-center justify-center hover:scale-110 transition-transform shadow-md" aria-label="Source code"><i class="fa-solid fa-link text-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center gap-2 text-xs font-bold text-emerald-500 uppercase">
+                            <i class="fa-solid fa-brain"></i> AI & Data
+                        </div>
+                        <h4 class="text-xl font-bold">Atlas Voice Intelligence</h4>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm">Real-time LLM-driven custom hardware controller with minimal feedback loops.</p>
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Python</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">PyTorch</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">OpenAI</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Showcase Dynamic Modal -->
+    <div id="projectModal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center px-4">
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity" onclick="closeProjectModal()"></div>
+        <div class="glass relative rounded-2xl max-w-2xl w-full p-6 sm:p-8 overflow-hidden z-10 border border-slate-200/50 dark:border-slate-800/50 shadow-2xl animate-fade-in">
+            <button onclick="closeProjectModal()" class="absolute top-4 right-4 w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center transition-colors" aria-label="Close modal">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="space-y-6">
+                <img id="modalImage" src="" alt="Project Image" class="w-full h-56 object-cover rounded-xl shadow-md border" onerror="this.src='https://placehold.co/600x400'">
+                <div>
+                    <h3 id="modalTitle" class="text-2xl font-bold text-slate-900 dark:text-white"></h3>
+                    <p id="modalTech" class="text-xs text-primary-500 font-bold mt-1 uppercase tracking-wide"></p>
+                </div>
+                <p id="modalDesc" class="text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="closeProjectModal()" class="px-5 py-2.5 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 font-semibold transition-all text-sm">Close</button>
+                    <a href="#" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:scale-105 transition-transform text-sm">View Live Project <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-xs"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Timeline Section -->
+    <section id="experience" class="py-24 px-6 relative z-10 glass border-y border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <div class="inline-flex items-center gap-3 justify-center">
+                    <span class="h-1 w-8 bg-primary-500 rounded-full"></span>
+                    <h2 class="text-primary-500 dark:text-primary-400 font-bold uppercase tracking-wider text-sm">My Journey</h2>
+                    <span class="h-1 w-8 bg-primary-500 rounded-full"></span>
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Work History & Education</h3>
+            </div>
+
+            <!-- Vertical Timeline -->
+            <div class="relative border-l border-slate-200 dark:border-slate-800 ml-4 md:ml-32 space-y-12">
+                
+                <!-- Experience Item 1 -->
+                <div class="relative pl-8 md:pl-12 group">
+                    <!-- Timeline Node -->
+                    <div class="absolute -left-[11px] top-1.5 w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900 border-4 border-primary-500 flex items-center justify-center transition-transform duration-300 group-hover:scale-125">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-500"></span>
+                    </div>
+                    <!-- Left Year Side Panel (visible on desktop) -->
+                    <div class="md:absolute md:-left-32 md:top-1.5 md:w-24 text-right hidden md:block">
+                        <span class="font-extrabold text-indigo-500">2024 - Present</span>
+                    </div>
+                    <!-- Content Card -->
+                    <div class="glass p-6 rounded-2xl border border-slate-200/50 hover:border-primary-500/40 transition-all duration-300 shadow-md">
+                        <span class="inline-block md:hidden text-xs font-bold text-indigo-500 mb-2">2024 - Present</span>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">Lead Software Architect</h4>
+                        <p class="text-sm font-semibold text-primary-500 dark:text-primary-400">Veritas Tech Innovations</p>
+                        <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm leading-relaxed">
+                            Pioneered next generation distributed pipelines, reduced render latencies by 42% on responsive frontend dashboards, and scaled remote AWS setups for multi-tenant microservices.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Experience Item 2 -->
+                <div class="relative pl-8 md:pl-12 group">
+                    <div class="absolute -left-[11px] top-1.5 w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900 border-4 border-pink-500 flex items-center justify-center transition-transform duration-300 group-hover:scale-125">
+                        <span class="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
+                    </div>
+                    <div class="md:absolute md:-left-32 md:top-1.5 md:w-24 text-right hidden md:block">
+                        <span class="font-extrabold text-pink-500">2021 - 2024</span>
+                    </div>
+                    <div class="glass p-6 rounded-2xl border border-slate-200/50 hover:border-pink-500/40 transition-all duration-300 shadow-md">
+                        <span class="inline-block md:hidden text-xs font-bold text-pink-500 mb-2">2021 - 2024</span>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">Full-Stack Engineer</h4>
+                        <p class="text-sm font-semibold text-pink-500">Nebula Pixel Studio</p>
+                        <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm leading-relaxed">
+                            Designed visual brand libraries, integrated REST and GraphQL endpoints in TypeScript Express applications, and authored standard visual interactive UI assets.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Experience Item 3 -->
+                <div class="relative pl-8 md:pl-12 group">
+                    <div class="absolute -left-[11px] top-1.5 w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-900 border-4 border-emerald-500 flex items-center justify-center transition-transform duration-300 group-hover:scale-125">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    </div>
+                    <div class="md:absolute md:-left-32 md:top-1.5 md:w-24 text-right hidden md:block">
+                        <span class="font-extrabold text-emerald-500">2018 - 2021</span>
+                    </div>
+                    <div class="glass p-6 rounded-2xl border border-slate-200/50 hover:border-emerald-500/40 transition-all duration-300 shadow-md">
+                        <span class="inline-block md:hidden text-xs font-bold text-emerald-500 mb-2">2018 - 2021</span>
+                        <h4 class="text-xl font-bold text-slate-900 dark:text-white">BS in Computer Science</h4>
+                        <p class="text-sm font-semibold text-emerald-500">Stanford University</p>
+                        <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm leading-relaxed">
+                            Graduated with honors. Specialized in human-computer interaction, algorithm complexities, data structures, and spatial graphics rendering.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 px-6 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <div class="inline-flex items-center gap-3 justify-center">
+                    <span class="h-1 w-8 bg-primary-500 rounded-full"></span>
+                    <h2 class="text-primary-500 dark:text-primary-400 font-bold uppercase tracking-wider text-sm">Client Reviews</h2>
+                    <span class="h-1 w-8 bg-primary-500 rounded-full"></span>
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">What Clients Say</h3>
+            </div>
+
+            <!-- Dynamic Slider Viewport -->
+            <div class="relative glass rounded-3xl p-8 sm:p-12 border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden min-h-[300px] flex flex-col justify-between">
+                
+                <!-- Decorative Quote Icon -->
+                <i class="fa-solid fa-quote-left absolute top-6 left-6 text-6xl text-slate-200/50 dark:text-slate-800/50 pointer-events-none"></i>
+
+                <!-- Slide Container -->
+                <div id="testimonialContainer" class="relative z-10 transition-all duration-500">
+                    <!-- Will be injected by JS dynamically to support clean swipes and updates -->
+                </div>
+
+                <!-- Slider Controls -->
+                <div class="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/30 dark:border-slate-800/30">
+                    <div class="flex gap-2" id="testimonialDots">
+                        <!-- Bullets generated automatically by JavaScript -->
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="prevTestimonial()" class="w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:scale-105 active:scale-95" aria-label="Previous review">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextTestimonial()" class="w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center transition-all hover:scale-105 active:scale-95" aria-label="Next review">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-24 px-6 relative z-10 glass border-y border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Left Side: Contact Information & Pitch -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="h-1 w-12 bg-primary-500 rounded-full"></span>
+                        <h2 class="text-primary-500 dark:text-primary-400 font-bold uppercase tracking-wider text-sm">Contact Me</h2>
+                    </div>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Let's build your next digital landmark.</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Have an upcoming application, dynamic portfolio, or refactoring layout? Drop a message! I respond within 24 working hours.
+                    </p>
+
+                    <!-- Contact Details cards -->
+                    <div class="space-y-4 pt-4">
+                        <div class="flex items-center gap-4 p-4 glass rounded-2xl border border-slate-200/50 hover:scale-[1.02] transition-transform">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                                <i class="fa-solid fa-envelope text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400">Email address</p>
+                                <a href="mailto:alex@morghan.dev" class="text-sm font-semibold hover:underline">alex@morgan-dev.io</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 p-4 glass rounded-2xl border border-slate-200/50 hover:scale-[1.02] transition-transform">
+                            <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center">
+                                <i class="fa-solid fa-phone text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400">Phone</p>
+                                <a href="tel:+15550199" class="text-sm font-semibold hover:underline">+1 (555) 0199</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 p-4 glass rounded-2xl border border-slate-200/50 hover:scale-[1.02] transition-transform">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                                <i class="fa-solid fa-location-dot text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-400">Location</p>
+                                <p class="text-sm font-semibold">San Francisco, California</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Contact Form -->
+                <div class="lg:col-span-7 glass p-8 sm:p-10 rounded-3xl border border-slate-200/50 shadow-xl">
+                    <form id="contactForm" class="space-y-6" onsubmit="handleContactSubmit(event)">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="form_name" class="text-sm font-bold">Full Name</label>
+                                <input type="text" id="form_name" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-primary-500 transition-colors" placeholder="John Doe">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="form_email" class="text-sm font-bold">Email Address</label>
+                                <input type="email" id="form_email" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-primary-500 transition-colors" placeholder="john@example.com">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="form_subject" class="text-sm font-bold">Subject</label>
+                            <input type="text" id="form_subject" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-primary-500 transition-colors" placeholder="Project collaboration proposal">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="form_message" class="text-sm font-bold">Message</label>
+                            <textarea id="form_message" required rows="5" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-primary-500 transition-colors" placeholder="Outline your project timeline and criteria here..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-bold shadow-lg shadow-indigo-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                            Send Message <i class="fa-solid fa-paper-plane text-sm"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Resume Previewer Modal -->
+    <div id="resumeModal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center px-4">
+        <div class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity" onclick="closeResumeModal()"></div>
+        <div class="glass relative rounded-2xl max-w-3xl w-full p-6 sm:p-8 overflow-hidden z-10 border border-slate-200/50 dark:border-slate-800/50 shadow-2xl animate-fade-in max-h-[90vh] flex flex-col">
+            <button onclick="closeResumeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center transition-colors" aria-label="Close modal">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-2xl font-bold mb-4">Curriculum Vitae</h3>
+            <div class="overflow-y-auto flex-1 space-y-6 pr-2">
+                <!-- Resume Summary -->
+                <div class="border-b border-slate-200/20 pb-4">
+                    <h4 class="text-lg font-bold text-indigo-500">Alex Morgan</h4>
+                    <p class="text-sm">Senior Full Stack Architect | San Francisco, CA</p>
+                </div>
+                <!-- Core Competencies -->
+                <div>
+                    <h5 class="font-bold text-slate-400 uppercase text-xs tracking-wider mb-2">Core Competencies</h5>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">React Framework</span>
+                        <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">TypeScript / ES6</span>
+                        <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">High Scalability Microservices</span>
+                        <span class="px-2.5 py-1 text-xs font-semibold glass rounded-lg">Docker / AWS Deployments</span>
+                    </div>
+                </div>
+                <!-- Experience -->
+                <div class="space-y-4">
+                    <h5 class="font-bold text-slate-400 uppercase text-xs tracking-wider mb-2">Detailed Work Experience</h5>
+                    <div>
+                        <div class="flex justify-between font-bold text-sm">
+                            <span>Lead Software Architect @ Veritas Tech</span>
+                            <span>2024 - Present</span>
+                        </div>
+                        <ul class="list-disc pl-5 text-sm text-slate-500 space-y-1 mt-1">
+                            <li>Orchestrated full-scale transitions of monorepo packages to secure Next.js architectures.</li>
+                            <li>Decreased server rendering overhead by 42% through local state-caching.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="flex justify-between font-bold text-sm">
+                            <span>Full-Stack Engineer @ Nebula Pixel Studio</span>
+                            <span>2021 - 2024</span>
+                        </div>
+                        <ul class="list-disc pl-5 text-sm text-slate-500 space-y-1 mt-1">
+                            <li>Coded dozens of high availability REST architectures.</li>
+                            <li>Formulated visual design guides using Tailwind Utility setups.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-slate-200/50 dark:border-slate-800/50 mt-4">
+                <button onclick="closeResumeModal()" class="px-5 py-2.5 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 font-semibold transition-all text-sm">Close</button>
+                <a href="#" download class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:scale-105 transition-transform text-sm"><i class="fa-solid fa-download mr-1"></i> Download PDF</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 relative z-10 border-t border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <a href="#hero" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+                    A
+                </div>
+                <span class="text-lg font-extrabold tracking-tight bg-gradient-to-r from-indigo-500 to-primary-600 bg-clip-text text-transparent">Alex.Dev</span>
+            </a>
+            
+            <p class="text-sm text-slate-400 text-center md:text-left">
+                &copy; 2026 Alex Morgan. Built with high aesthetic precision. All rights reserved.
+            </p>
+
+            <div class="flex gap-4">
+                <a href="#" class="text-slate-400 hover:text-primary-500 transition-colors text-lg" aria-label="Github"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="text-slate-400 hover:text-primary-500 transition-colors text-lg" aria-label="Linkedin"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" class="text-slate-400 hover:text-primary-500 transition-colors text-lg" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Engine -->
+    <script>
+        // DOM Selectors
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const projectsContainer = document.getElementById('projectsContainer');
+        const projectModal = document.getElementById('projectModal');
+        const resumeModal = document.getElementById('resumeModal');
+        const toastContainer = document.getElementById('toastContainer');
+        const typingText = document.getElementById('typingText');
+
+        // Typing Loop
+        const strings = ["Creative Developer", "Full-Stack Architect", "Interactive Designer"];
+        let stringIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeEffect() {
+            const currentString = strings[stringIndex];
+            if (isDeleting) {
+                typingText.textContent = currentString.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentString.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 100;
+
+            if (!isDeleting && charIndex === currentString.length) {
+                typeSpeed = 1800; // Delay before deleting
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                stringIndex = (stringIndex + 1) % strings.length;
+                typeSpeed = 500; // Pause before typing next word
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+
+        // Particle System Background
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 120 };
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            const numberOfParticles = Math.min(Math.floor(window.innerWidth / 12), 110);
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    radius: Math.random() * 2.5 + 1
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.fillStyle = isDark ? 'rgba(99, 102, 241, 0.4)' : 'rgba(99, 102, 241, 0.2)';
+            ctx.strokeStyle = isDark ? 'rgba(99, 102, 241, 0.08)' : 'rgba(99, 102, 241, 0.04)';
+
+            particles.forEach((p, index) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Vector motion
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Bounce walls
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                // Mouse interaction repulsion
+                if (mouse.x && mouse.y) {
+                    let dx = p.x - mouse.x;
+                    let dy = p.y - mouse.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        let force = (mouse.radius - dist) / mouse.radius;
+                        p.x += (dx / dist) * force * 1.5;
+                        p.y += (dy / dist) * force * 1.5;
+                    }
+                }
+
+                // Node Connections
+                for (let j = index + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dx = p.x - p2.x;
+                    let dy = p.y - p2.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(drawParticles);
+        }
+
+        // Dark Mode State System
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Mobile Menu Toggling
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Project Filters Logic
+        const filterBtns = document.querySelectorAll('.project-filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Toggle active styles
+                filterBtns.forEach(b => {
+                    b.classList.remove('active-filter', 'bg-primary-500', 'text-white');
+                    b.classList.add('glass', 'text-slate-600', 'dark:text-slate-300');
+                });
+                btn.classList.add('active-filter', 'bg-primary-500', 'text-white');
+                btn.classList.remove('glass', 'text-slate-600', 'dark:text-slate-300');
+
+                const filterVal = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filterVal === 'all' || card.getAttribute('data-category') === filterVal) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Custom Showcases Project Modal
+        function openProjectModal(title, description, tech, image) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalDesc').textContent = description;
+            document.getElementById('modalTech').textContent = tech;
+            document.getElementById('modalImage').src = image;
+            projectModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectModal() {
+            projectModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Live Resume Control
+        function viewResume() {
+            resumeModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeResumeModal() {
+            resumeModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Testimonial Carousel Engine
+        const reviews = [
+            {
+                name: "Sarah Jenkins",
+                role: "Director of Product, DevCorp",
+                text: "Alex was vital in engineering our platform redesign. The modular React components were extremely well written and speed audits shot up dramatically. Highly recommend!",
+                img: "https://placehold.co/100x100/e0e7ff/6366f1?text=Sarah"
+            },
+            {
+                name: "Michael Chen",
+                role: "Co-Founder, Aura Finance",
+                text: "Absolutely exceptional execution on our banking landing screens. Alex combined crisp UX animations with perfect code structures that scaled effortlessly into production.",
+                img: "https://placehold.co/100x100/fce7f3/ec4899?text=Michael"
+            },
+            {
+                name: "Emma Watson",
+                role: "VP of Product, Intellect.io",
+                text: "The integration of advanced real-time tools with our Node architecture went incredibly smoothly. Alex was very responsive and professional.",
+                img: "https://placehold.co/100x100/d1fae5/10b981?text=Emma"
+            }
+        ];
+
+        let activeReviewIndex = 0;
+
+        function renderTestimonials() {
+            const container = document.getElementById('testimonialContainer');
+            const dotsContainer = document.getElementById('testimonialDots');
+            
+            // Build dots
+            dotsContainer.innerHTML = '';
+            reviews.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = `w-3 h-3 rounded-full transition-all ${index === activeReviewIndex ? 'bg-primary-500 w-6' : 'bg-slate-300 dark:bg-slate-700'}`;
+                dot.addEventListener('click', () => {
+                    activeReviewIndex = index;
+                    renderTestimonials();
+                });
+                dotsContainer.appendChild(dot);
+            });
+
+            // Active slide
+            const review = reviews[activeReviewIndex];
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 italic leading-relaxed">
+                            "${review.text}"
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <img src="${review.img}" alt="${review.name}" class="w-14 h-14 rounded-full object-cover shadow-md border-2 border-primary-500/20" onerror="this.src='https://placehold.co/100'">
+                            <div>
+                                <h4 class="font-extrabold text-lg text-slate-900 dark:text-white">${review.name}</h4>
+                                <p class="text-sm text-primary-500 font-semibold">${review.role}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.style.opacity = '1';
+            }, 180);
+        }
+
+        function nextTestimonial() {
+            activeReviewIndex = (activeReviewIndex + 1) % reviews.length;
+            renderTestimonials();
+        }
+
+        function prevTestimonial() {
+            activeReviewIndex = (activeReviewIndex - 1 + reviews.length) % reviews.length;
+            renderTestimonials();
+        }
+
+        // Contact Submission Handler
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('form_name').value;
+            const email = document.getElementById('form_email').value;
+            const subject = document.getElementById('form_subject').value;
+            const message = document.getElementById('form_message').value;
+
+            // Form Submit Simulation Success
+            showToast(`Thank you, ${name}! Your proposal has been transmitted successfully.`, 'success');
+            document.getElementById('contactForm').reset();
+        }
+
+        // Dynamic Beautiful Toast Messages
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `glass px-6 py-4 rounded-xl border border-slate-200/50 dark:border-slate-800/50 shadow-2xl flex items-center gap-3 animate-fade-in pointer-events-auto min-w-[320px]`;
+            
+            let icon = '<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>';
+            if (type === 'error') {
+                icon = '<i class="fa-solid fa-circle-xmark text-rose-500 text-xl"></i>';
+            }
+
+            toast.innerHTML = `
+                ${icon}
+                <div class="flex-1">
+                    <p class="text-sm font-semibold">${message}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white ml-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+
+            toastContainer.appendChild(toast);
+            
+            // Auto Remove Toast
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+                toast.style.transition = 'all 0.5s ease-out';
+                setTimeout(() => toast.remove(), 500);
+            }, 5500);
+        }
+
+        // Active Scroll Progress for skill anims
+        function checkScroll() {
+            const skillProgressBars = document.querySelectorAll('.scroll-trigger-width');
+            skillProgressBars.forEach(bar => {
+                const rect = bar.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 50) {
+                    bar.style.width = bar.getAttribute('data-width');
+                }
+            });
+        }
+
+        // App Initializer Loops
+        window.onload = function() {
+            initParticles();
+            drawParticles();
+            typeEffect();
+            renderTestimonials();
+            checkScroll();
+        }
+
+        window.onresize = function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('scroll', checkScroll);
+
+        // Track Mouse Coordinates for Particle Canvas
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+    </script>
+</body>
+</html>
